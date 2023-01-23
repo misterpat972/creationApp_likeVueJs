@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Accueil</title>
+</head>
+<body>
+    
+    <div id="app">
+        <h1 class="title">photos</h1>
+        <!-- ici je crée une boucle pour afficher les photos -->
+        <div class="row" v-for="photo in photos" :key="photo.id">
+            <div class="col">
+                <div class="card">
+                    <img classe="img" v-bind:src="photo.url" alt="">
+                    <!-- ici j'affiche le titre de la photo --> 
+                    <p class="title-photo">{{ photo.title }}</p>
+                    <div class="card-footer">
+                        <!-- quand on va cliquer sur le bouton cela va déclencher la fonction addLike -->
+                        <button v-on:click="addLike(photo)" class="btn">Like</button>
+                        <!-- ici j'affiche le nombre de like -->
+                        <span  class="like">{{photo.likes ? photo.likes : "0"}} Like{{photo.likes > 1 ? "s" : "" }} </span>
+                    </div>
+                    <div class="comments"> 
+                <!-- je soumet le formulaire avec un préventdefault pour ne pas rafraichir la page -->                 
+                <form v-on:submit.prevent="(e) => addComments(e, photo)">
+                            <input type="text" >
+                            <button type="submit" class="btn">Commenter</button>
+                        </form>
+                    </div>
+                    <!-- ici je crée une boucle pour afficher les commentaires -->
+                    <div class="comment" v-for="comment in photo.comments" :key="photo">
+                        <!-- ici j'affiche le commentaire -->
+                        <p> {{ comment }}</p>
+                    </div>
+                                         
+                </div>
+            </div>
+        </div>   
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+    const { createApp } = Vue
+
+    createApp({
+        data() {
+        return {
+            // ici je crée un tableau vide pour y pusher les données de l'api
+            photos: [],
+            // ici le nombre de like par défaut est 0
+            likes: 0,
+            // ici je crée un tableau vide pour y pusher les commentaires
+            comments: []
+            
+        }
+        },
+        mounted() {
+            // recupération des données fake d'une api pour ensuite les afficher dans la console
+            fetch('https://jsonplaceholder.typicode.com/photos')
+            // je transforme les données en json
+            .then(response => response.json())
+            // je récupère les données et je les push dans le tableau photos
+            .then(data => this.photos.push(...data));
+        },
+        methods: {
+            addLike(photo) {  
+                // ici je met une condition pour vérifier si il y a des likes dans le tableau
+                if (photo.likes){
+                // ici je fais un incrementation des likes si il y en a déjà    
+                  photo.likes++
+                } else {
+                // ici je crée un tableau avec un like si il n'y a pas de like    
+                    photo.likes = 1
+                }               
+                 
+            },
+            addComments(event, photo) {      
+                // ici je récupère la valeur de l'input         
+                const value = event.target.elements[0].value
+                // ici je met une condition pour vérifier si il y a des commentaires dans le tableau
+                if(photo.comments) {
+                // ici je push la valeur de l'input dans le tableau
+                    photo.comments.push(value)
+                } else {
+                // ici je crée un tableau avec la valeur de l'input si il n'y a pas de commentaire
+                    photo.comments = [value]
+                }                                        
+            }                     
+        }
+
+    }).mount('#app')
+    </script>
+
+    
+</body>
+</html>

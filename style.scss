@@ -1,0 +1,63 @@
+*{    
+    box-sizing: border-box;
+}
+
+.card{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    text-align: center;
+    
+}
+
+.card-body{
+    padding: 1rem;    
+}
+
+.row{
+    display: flex;
+    flex-wrap: wrap; 
+}
+
+.col{
+    width: calc(100% / 2);
+    padding: 10px;    
+}
+
+.img{
+    width: 100%;
+
+}
+
+.card-footer{
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem;    
+}
+
+.btn{
+    border: none;
+   background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:hover{
+        background: linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%);
+    }
+}
+
+.comments{
+
+    form{
+        width: 100%;
+    }
+    
+
+    input{        
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+}
